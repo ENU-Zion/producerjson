@@ -1,30 +1,94 @@
 # producerjson
 
-Producer JSON smart contract for EOS.
+Producer JSON smart contract for FIBOS.
 
-# Usage
+FIBOS 出块人描述文件
 
-### View the table
+# Usage 用法
+
+### json sample 描述文件例子
+
+"node_type": "full":主要用于给用户提供api节点服务
+
+"node_type": "seed":主要用于节点p2p连接
+
+
+```json
+let producerjson = {
+    "producer_account_name": "fibosrockskr",
+    "org": {
+        "candidate_name": "Fibos Rocks",
+        "website": "http://fibos.rocks",
+        "email": "support@fibos.rocks"
+    },
+    "nodes": [
+        {
+            "location": {
+                "name": "Tokyo",
+                "country": "JP",
+                "latitude": 34.8,
+                "longitude": 138.4
+            },
+            "node_type": "full",
+            "api_endpoint": "http://api.fibos.rocks",
+            "ssl_endpoint": "https://api.fibos.rocks"
+        },
+        {
+            "location": {
+                "name": "Tokyo",
+                "country": "JP",
+                "latitude": 34.8,
+                "longitude": 138.4
+            },
+            "node_type": "producer"
+        },
+        {
+            "location": {
+                "name": "Tokyo",
+                "country": "JP",
+                "latitude": 34.8,
+                "longitude": 138.4
+            },
+            "node_type": "seed",
+            "p2p_endpoint": "seed.fibos.rocks:10020"
+        }
+    ]
+}
+```
+
+### View the table 查看列表
 
 ```
-cleos get table producerjson producerjson producerjson
+var result = fibos.getTableRowsSync(true, "producerjson", "producerjson", "producerjson")
+console.log(result);
 ```
 
-### Add to the table
+
+### Add to the table 添加节点信息
 
 ```
-cleos push action producerjson set '{"owner":"your_account", "json": "your_json"}' -p your_account@active
+var ctx = fibos.contractSync("producerjson");
+var result = ctx.setSync({
+    "owner": "fibosrockskr",
+    "json": JSON.stringify(producerjson)
+}, {
+        "authorization": "fibosrockskr"
+    })
+
+console.log(result);
 ```
 
-**Example**:
-```
-cleos push action producerjson set '{"owner":"teamgreymass", "json": "'`printf %q $(cat bp.json | tr -d "\r")`'"}' -p teamgreymass@active
-```
-
-### Remove from the table
+### Remove from the table 删除节点信息
 
 ```
-cleos push action producerjson del '{"owner":"your_account"}' -p your_account@active
+var ctx = fibos.contractSync("producerjson");
+var result = ctx.delSync({
+    "owner": "fibosrockskr"
+}, {
+        "authorization": "fibosrockskr"
+    })
+
+console.log(result);
 ```
 
 
@@ -42,5 +106,7 @@ eosiocpp -g producerjson.abi producerjson.cpp && eosiocpp -o producerjson.wast p
 # How to deploy
 
 ```
-cleos set contract producerjson producerjson -p producerjson@active
+fibos.setabiSync('producerjson', fs.readFileSync(abipath));
+
+fibos.setcodeSync('producerjson', 0, 0, fs.readFileSync(wasmpath));
 ```
