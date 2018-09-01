@@ -50,7 +50,7 @@ let producerjson = {
                 "longitude": 138.4
             },
             "node_type": "seed",
-            "p2p_endpoint": "seed.fibos.rocks:10020"
+            "p2p_endpoint": "seed.fibos.rocks:10100"
         }
     ]
 }
