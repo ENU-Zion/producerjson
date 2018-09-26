@@ -19,7 +19,12 @@ let producerjson = {
     "org": {
         "candidate_name": "Fibos Rocks",
         "website": "http://fibos.rocks",
-        "email": "support@fibos.rocks"
+        "email": "support@fibos.rocks",
+        "branding": {
+            "logo_256": "https://raw.githubusercontent.com/fibosRocks/logo/master/fibsorockskr.png",
+            "logo_1024": "",
+            "logo_svg": ""
+        }
     },
     "nodes": [
         {
